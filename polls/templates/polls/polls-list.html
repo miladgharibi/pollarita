@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}My Polls List{% endblock title %}
+
+{% block content %}
+    {% if objects %}
+	<main class="container pt-5 mt-5" style="min-height:100vh;">
+		<div class="row d-flex gap-2 mx-2">
+            <h1 class="text-muted">All the polls I have created can be managed here.</h1>
+            {% for object in objects %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 dir="auto" class="card-title fw-bold">{{ object.title }}</h5>
+                    {% if object.status %}
+                        <p class="card-text text-muted">Public Poll</p>
+                    {% else %}
+                        <p class="card-text text-muted">Private Poll</p>
+                    {% endif %}
+                    <a href="{{ object.get_result_url }}" class="btn btn-primary">See result</a>
+                </div>
+            </div>
+			{% endfor %}
+		</div>
+	</main>
+    {% else %}
+    <main class="container-fluid form-container p-0 m-0">
+        <h1 class="display-1 mx-4 text-center">There are no polls here yet :(</h1>
+    </main>
+    {% endif %}
+
+    {% include 'pagination.html' %}
+{% endblock %}

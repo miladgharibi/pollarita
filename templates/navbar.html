@@ -1,0 +1,76 @@
+{% load crispy_forms_tags %}
+
+<!-- The Modal -->
+<div class="modal" id="createNewPollModal">
+	<div class="modal-dialog modal-dialog-centered">
+	<div class="modal-content">
+
+		<!-- Modal Header -->
+		<div class="modal-header">
+		<h4 class="modal-title">New</h4>
+		<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+		</div>
+
+		<!-- Modal body -->
+		<div class="modal-body">
+			<form class="d-flex flex-column gap-2" method="POST" action="{% url 'polls:poll_create_view' %}">
+				{% csrf_token %}
+				{{ poll_creation_form|crispy }}
+				<button class="btn btn-primary">Create</button>
+			</form>
+		</div>
+
+		<!-- Modal footer -->
+		<div class="modal-footer">
+			<button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+		</div>
+
+	</div>
+	</div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+	<div class="container-fluid">
+	  <a class="navbar-brand" href="{% url 'polls:poll_home_view' %}">Pollarita</a>
+	  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	  </button>
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mx-auto text-center mb-2 mb-lg-0">
+		  <li class="nav-item">
+			<a class="nav-link {% if request.path == '/' %}active{% endif %}" aria-current="page" href="{% url 'polls:poll_home_view' %}">Home</a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link {% if request.path == '/contact-us/' %}active{% endif %}" href="{% url 'contact_us' %}">Contact</a>
+		  </li>
+		  {% if user.is_authenticated %}
+		  	<li class="nav-items">
+				<a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#createNewPollModal">Create poll</a>
+			</li>
+			<li class="nav-items">
+				<a class="nav-link {% if request.path == '/list/' %}active{% endif %}" href="{% url 'polls:poll_list_view' %}">My polls</a>
+			</li>
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+			  		Account
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<li><a class="dropdown-item" href="{% url 'edit_profile' user.pk %}">Profile settings</a></li>
+					<li><hr class="dropdown-divider"></li>
+					<li>
+						<a class="dropdown-item text-primary" href="{% url 'logout' %}">Logout</a>
+					</li>
+				</ul>
+			{% else %}
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'login' %}">Login</a>
+				</li>
+			{% endif %}
+		  </li>
+		</ul>
+		<form class="d-flex" action="{% url 'polls:poll_search_view' %}" method="GET">
+		  <input name="q" class="form-control me-2" type="search" placeholder="What poll do you want?" aria-label="Search">
+		  <button class="btn btn-outline-info" type="submit">Search</button>
+		</form>
+	  </div>
+	</div>
+  </nav>

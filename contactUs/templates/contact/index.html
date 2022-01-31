@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Contact US{% endblock title %}
+
+{% block content %}
+    <main class="container" style="min-height:100vh">
+        <form class="form-container mt-0" method="POST">
+            <div class="gap-4 mx-2 d-flex flex-column">
+                <h2>Contact Us Form</h2>
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button class="btn btn-primary" style="width:100%">Send</button>
+            </div>
+        </form>
+    </main>
+{% endblock content %}

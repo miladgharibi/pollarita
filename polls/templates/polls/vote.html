@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Vote poll{% endblock title %}
+
+{% block content %}
+    <main class="container" style="min-height:100vh; display:grid; place-items:center;">
+        <form dir="auto" method="POST" class="d-flex flex-column gap-4  form">
+            <h2>{{ poll.title }}</h2>
+            {% csrf_token %}
+            <div class="lh-xl text-center d-flex gap-4 flex-column">
+            {% for key, value in options.items %}
+                {% if key != "" %}
+                <label for="{{ key|lower }}" class="selector" id="label_{{ forloop.counter }}">
+                    <input type="radio" id="{{ key|lower }}" data-selector="#label_{{ forloop.counter }}"  name="selector" value="option_{{ forloop.counter }}">
+                    <span>{{ key|title }}</span>
+                </label>
+                {% endif %}
+            {% endfor %}
+            </div>
+            <br>
+            <button class="btn text-white" style="background-color:#4AD97E;">Submit your vote</button>
+        </form>
+    </main>
+{% endblock content %}

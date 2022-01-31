@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load poll_tags %}
+
+{% block title %}View Results{% endblock title %}
+
+
+{% block content %}
+
+<main class="container my-5 py-5 px-5">
+    <div class="row mb-5" dir="auto">
+        <div class="col-sm-12">
+            <h1 class="display-1">{{ poll.title }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <canvas id="chart_one" width="100" height="100"></canvas>
+        </div>
+        <div class="col-sm-6">
+            <canvas id="chart_two" width="100" height="100"></canvas>
+        </div>
+    </div>
+    <div class="row my-5 gap-5">
+        {% comment %} <div class="col-sm-5">
+            <div class="d-flex gap-2 align-items-center fs-1">
+                <p class="fw-bold">Total Votes:</p>
+                <p>{{ votes.total_vote }}</p>
+            </div>
+            <div class="d-flex gap-2 align-items-center">
+                <p class="fw-bold fs-2">MAX:</p>
+                <p class="fs-2">{{ max_element.title }}</p><br>
+                <ul class="fs-3 text-success">
+                    <li>{{ votes.max_vote }}</li>
+                </ul>
+            </div>
+            <div class="d-flex gap-2 align-items-center">
+                <p class="fw-bold fs-2">MIN:</p>
+                <p class="fs-2">{{ min_element }}</p><br>
+                <ul class="fs-3 text-danger">
+                    <li>{{ votes.min_vote }}</li>
+                </ul>
+            </div>
+            <div class="d-flex gap-2 align-items-center">
+                <p class="fw-bold fs-2">AVG:</p>
+                <ul class="fs-3 text-primary">
+                    <li>{{ votes.avg_votes|to_int }}</li>
+                </ul>
+            </div>
+        </div> {% endcomment %}
+
+        <div class="col-sm-6">
+            <div class="d-flex gap-2 align-items-center">
+                <p class="fw-bold fs-4">STATUS:</p>
+                {% if poll.status %}
+                    <p class="fs-5 text-info">Public</p>
+                {% else %}
+                    <p class="fs-5 text-info">Private</p>
+                {% endif %}
+            </div>
+            <div class="d-flex gap-2 align-items-center">
+                <p class="fw-bold fs-4">UUID:</p>
+                <p class="fs-5 text-info">{{ poll.pk }}</p>
+            </div>
+            <div class="d-flex gap-2 align-items-center">
+                <p class="fw-bold fs-4">DT:</p>
+                <p class="fs-5">{{ poll.date_created }}</p>
+            </div>
+        </div>
+        <hr>
+        {% if poll.status == 0 %}
+        <div class="col-sm-12 d-flex gap-2 align-items-center">
+            <p class="fw-bold fs-4">PRIVATE KEY:</p>
+            <p class="fs-5 text-info">{{ poll.private_key }}</p>
+        </div>
+        <div class="d-flex flex-column justify-content-start">
+            <p>Your private link</p>
+            <code class="rounded bg--lighter p-2 d-flex flex-row justify-content-between align-items-center">
+                <a id="private_link" href="{{ poll.get_private_result_url }}?private_key={{ poll.private_key }}">{{ request.get_host }}/vote/private/{{ poll.pk }}/?private_key={{ poll.private_key }}</a>
+                <button onclick='navigator.clipboard.writeText(document.getElementById("private_link").textContent);', class="btn btn-outline-primary">copy</button>
+            </code>
+        </div>
+        {% endif %}
+    </div>
+    <div class="row">
+        <!-- The Modal -->
+        <div class="modal fade-scale" id="confirmPollDelete">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+        
+                <!-- Modal Header -->
+                <div class="modal-header">
+                <h4 class="modal-title">Alert</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+        
+                <!-- Modal body -->
+                <div class="modal-body">
+                    Are you sure you want to delete this poll?
+                </div>
+        
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Close</button>
+                <a href="{% url 'polls:poll_delete_view' poll.pk %}" class="btn btn-danger">Delete</a>
+                </div>
+        
+            </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmPollDelete">Delete this Poll</button>
+    </div>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+<script>
+    const ctx_one = document.getElementById('chart_one').getContext('2d');
+    const chartOne = new Chart(ctx_one, {
+        type: 'doughnut',
+        data: {
+            labels: [{% for key, value in options.items %}{% if key != "" %}'{{ key }}',{% endif %}{% endfor %}],
+            datasets: [{
+                label: '# of Votes',
+                data: [{% for key, value in options.items %}{% if key != "" %}{{ value }},{% endif %}{% endfor %}],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(153, 102, 255, 0.2)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: false
+                }
+            }
+        }
+    });
+
+    const ctx_two = document.getElementById('chart_two').getContext('2d');
+    const chartTwo = new Chart(ctx_two, {
+        type: 'bar',
+        data: {
+            labels: [{% for key, value in options.items %}{% if key != "" %}'{{ key }}',{% endif %}{% endfor %}],
+            datasets: [{
+                label: '# of Votes',
+                data: [{% for key, value in options.items %}{% if key != "" %}{{ value }},{% endif %}{% endfor %}],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(153, 102, 255, 0.2)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    
+</script>
+{% endblock content %}

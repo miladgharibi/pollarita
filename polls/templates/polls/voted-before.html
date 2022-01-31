@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Oops{% endblock title %}
+
+{% block content %}
+    <main class="container" style="height:100vh; display:grid; place-items:center;">
+        <div class="px-4 text-center">
+            <h1 class="display-1 text-center fw-bold text-muted">You have voted once before</h1>
+            <p class="text-center">If you think there is a problem, please let us know</p>
+            <a href="{% url 'contact_us' %}" class="link-primary text-center">CONTACT US</a>
+        </div>
+    </main>
+{% endblock content %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Create New Poll{% endblock title %}
+
+{% block content %}
+    <main role="main" class="form-container mb-5">
+        <form class="d-flex flex-column">
+            <h1>Create new poll</h1>
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="d-flex flex-column gap-4">
+                {% for i in number_options %}
+                    <label>Option* {{ forloop.counter }}</label>
+                    <input type="text" id="{{ i }}-option"/>
+                {% endfor %}
+            </div>
+            <button class="btn btn-primary my-5">Submit</button>
+        </form>
+    </main>
+{% endblock content %}

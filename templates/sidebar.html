@@ -1,0 +1,8 @@
+<div class="list-group">
+    {% url 'edit_profile' user.pk as the_user_pk_url %}
+    <a href="{{ the_user_pk_url }}" class="list-group-item list-group-item-action {% if request.path == the_user_pk_url %}active{% endif %}">Edit yout personal info</a>
+    <a href="{% url 'password_change' %}" class="list-group-item list-group-item-action {% if request.path == '/accounts/password_change/' %}active{% endif %}">Change Password</a>
+    <a href="{% url 'password_reset' %}" class="list-group-item list-group-item-action {% if request.path == '/accounts/password_reset/' %}active{% endif %}">Reset your password</a>
+    <a href="/api/" class="list-group-item list-group-item-action">API</a>
+    <a href="#" class="list-group-item list-group-item-action disabled">Create an exam</a>
+</div>  

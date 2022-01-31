@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+	{% if objects %}
+	<main class="container pt-5 mt-5" style="min-height:100vh;">
+		<div class="row d-flex gap-2 px-4 justify-content-center">
+			{% for object in objects %}
+            <div class="card" style="width:500px;">
+                <div class="card-body d-flex flex-column gap-4">
+                    <h5 dir="auto" class="card-title fw-bold">{{ object.title }}</h5>
+					<div class="d-flex flex-row justify-content-between">
+                    {% if object.status %}
+                        <p class="card-text text-muted">Public Poll</p>
+						{% else %}
+                        <p class="card-text text-muted">Private Poll</p>
+					{% endif %}
+					</div>
+                    <a href="{{ object.get_absolute_url }}" class="btn btn-warning text-light fw-bold" style="width:100%">Vote this poll</a>
+                </div>
+            </div>
+			{% endfor %}
+		</div>
+
+	</main>
+	{% else %}
+		<main class="container-fluid form-container p-0 m-0">
+			<h1 class="display-1 mx-4 text-center">There are no polls here yet :(</h1>
+		</main>
+	{% endif %}
+	
+	{% include 'pagination.html' %}
+
+{% endblock %}

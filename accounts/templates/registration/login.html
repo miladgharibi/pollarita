@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+	<main class="container my-0 form-container">
+		{% if user.is_authenticated %}
+			<div class="flex flex-col px-5">
+				<h2 class="text-center">you`ve logged-in recently</h2>
+				<a class="{{ accent_button }}" href="{% url 'polls:poll_home_view' %}">Back to Home</a>
+			</div>
+		{% else %}
+
+			<form class="bootstrap4 flex-grow-0 crispy-form" action="{% url 'login' %}" method="POST">
+				<h1 class="text-center">Login</h1>
+				{% csrf_token %}
+
+				{{ form |crispy }}
+
+				<button class="btn btn-info text-white">Login</button>
+				<a href="{% url 'password_reset' %}" class="text-center link-primary">Forgot your password? reset here</a>
+				<a href="{% url 'signup' %}" class="text-center link-primary">Or don`t have an account yet? register</a>
+			</form>
+
+		{% endif %}
+	</main>
+{% endblock %}

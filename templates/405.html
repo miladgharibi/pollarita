@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Error 405{% endblock %}
+
+{% block content %}
+	<main class="container" style="height:100vh; display:grid; place-items:center;">
+		<div class="text-center">
+			<h1 style="font-size:100px">405</h1>
+			<h2>Method not allowed</h2>
+			<p>You requested to this page with unallowed FORM method (GET / POST).</p>
+		</div>
+	</main>
+{% endblock %}
