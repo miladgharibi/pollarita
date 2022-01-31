@@ -18,7 +18,7 @@ Support this project with your organization. Your logo will show up here with a 
 Contributions, issues and feature requests are welcome.
 Feel free to check issues page if you want to contribute.
 Check the contributing guide.
-Author
+# Author
 
 👤 Milad Gharibi
 
