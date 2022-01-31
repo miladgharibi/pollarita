@@ -23,7 +23,7 @@ Check the contributing guide.
 👤 Milad Gharibi
 
     Instagram: @_milad_gharibi_
-    LinkedIn:@miladgharibi
+    LinkedIn:@www.linkedin.com/in/milad-gharibi-689192228
     Github: @miladgharibi
 
 Show your support
