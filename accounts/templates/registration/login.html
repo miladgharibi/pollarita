@@ -6,22 +6,23 @@
 	<main class="container my-0 form-container">
 		{% if user.is_authenticated %}
 			<div class="flex flex-col px-5">
-				<h2 class="text-center">you`ve logged-in recently</h2>
+				<h2 class="text-3xl font-bold text-red text-gray-600 p-10 text-center">you can`t create new account because you already have an account</h2>
 				<a class="{{ accent_button }}" href="{% url 'polls:poll_home_view' %}">Back to Home</a>
 			</div>
-		{% else %}
+		{% else %}	
+		<form class="bootstrap4 flex-grow-0 crispy-form" action="{% url 'login' %}" method="POST">
+			<h1 class="text-center">Login</h1>
+			{% csrf_token %}
 
-			<form class="bootstrap4 flex-grow-0 crispy-form" action="{% url 'login' %}" method="POST">
-				<h1 class="text-center">Login</h1>
-				{% csrf_token %}
+			{{ form |crispy }}
 
-				{{ form |crispy }}
-
-				<button class="btn btn-info text-white">Login</button>
-				<a href="{% url 'password_reset' %}" class="text-center link-primary">Forgot your password? reset here</a>
+			<button class="btn btn-info text-white">Login</button>
+			<div class="d-flex justify-content-between flex-wrap">
+				<a href="{% url 'password_reset' %}" class="text-center ">Forgot your password? reset here</a>
 				<a href="{% url 'signup' %}" class="text-center link-primary">Or don`t have an account yet? register</a>
-			</form>
-
+			</div>
+			</div>
+		</form>
 		{% endif %}
 	</main>
 {% endblock %}

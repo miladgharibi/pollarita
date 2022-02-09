@@ -25,8 +25,14 @@
 
 	</main>
 	{% else %}
-		<main class="container-fluid form-container p-0 m-0">
-			<h1 class="display-1 mx-4 text-center">There are no polls here yet :(</h1>
+		<main class="container-fluid" style="min-height: 100vh;">
+			<div class="row d-flex align-items-center justify-content-center" style="min-height:100vh">
+			  <div class="col-xs-1 center-block">
+			    <center>
+			      <h1 class="display-1 mx-4 text-center">There are no polls here yet :(</h1>
+			    </center>
+			  </div>
+			</div>
 		</main>
 	{% endif %}
 	
